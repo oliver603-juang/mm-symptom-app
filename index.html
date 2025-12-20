@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0284c7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2966/2966327.png">
+    <link rel="apple-touch-icon" href="./icon-512.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -40,12 +40,15 @@
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold text-slate-800">MM 症狀專家分析系統</h1>
-                    <p class="text-slate-500 text-sm font-medium">Medical Medium Healing Wisdom V4.9 (Full Edition)</p>
+                    <p class="text-slate-500 text-sm font-medium">Medical Medium Healing Wisdom V5.1</p>
                 </div>
             </div>
-            <button onclick="toggleSettings()" class="p-2 rounded-full bg-white shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors">
-                <i data-lucide="settings" class="w-5 h-5 text-slate-600"></i>
-            </button>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSettings()" class="p-2 rounded-full bg-white shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors">
+                    <i data-lucide="settings" class="w-5 h-5 text-slate-600"></i>
+                </button>
+                <div id="apiStatusBadge" class="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs font-bold tracking-tight">未設定 Key</div>
+            </div>
         </header>
 
         <!-- Search Section -->
@@ -61,7 +64,7 @@
                 </button>
             </div>
             <p class="text-[11px] text-slate-400 mt-4 flex items-center gap-1">
-                <i data-lucide="info" class="w-3 h-3"></i> 系統將結合 Medical Medium 全系列著作知識庫與聯網技術。
+                <i data-lucide="info" class="w-3 h-3"></i> 系統將結合 Medical Medium 全系列著作知識庫與 Google 搜尋接地技術。
             </p>
         </div>
 
@@ -73,6 +76,7 @@
 
         <!-- Result Display -->
         <div id="resultContent" class="hidden space-y-6">
+            <!-- Root Cause -->
             <div class="glass-card rounded-3xl p-8 shadow-lg border-l-8 border-rose-400 animate-fade-in">
                 <div class="flex items-center gap-2 mb-2">
                     <i data-lucide="activity" class="text-rose-400 w-4 h-4"></i>
@@ -81,6 +85,7 @@
                 <div id="rootCause" class="text-xl text-slate-800 font-bold leading-relaxed"></div>
             </div>
 
+            <!-- Foods & Supplements -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="glass-card rounded-3xl p-6 shadow-md animate-fade-in border border-emerald-50" style="animation-delay: 0.1s">
                     <h3 class="flex items-center gap-2 font-bold text-emerald-600 mb-4 text-sm">
@@ -96,6 +101,7 @@
                 </div>
             </div>
 
+            <!-- Guidance -->
             <div class="glass-card rounded-3xl p-6 shadow-md animate-fade-in border border-sky-50" style="animation-delay: 0.3s">
                 <h3 class="flex items-center gap-2 font-bold text-sky-600 mb-4 text-sm">
                     <i data-lucide="book-open" class="w-4 h-4"></i> 專家改善建議與療癒路徑
@@ -103,6 +109,7 @@
                 <div id="expertGuidance" class="text-slate-700 leading-relaxed space-y-4 text-sm"></div>
             </div>
 
+            <!-- Citations -->
             <div class="bg-slate-900 text-slate-300 rounded-3xl p-6 shadow-xl animate-fade-in border border-slate-700" style="animation-delay: 0.4s">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="flex items-center gap-2 font-bold text-sky-300 text-sm">
@@ -113,24 +120,19 @@
                 <div id="citations" class="space-y-3"></div>
             </div>
 
-            <!-- Email Section -->
+            <!-- Email Management -->
             <div id="emailSection" class="glass-card rounded-3xl p-6 shadow-xl border-2 border-sky-100 animate-fade-in">
                 <h3 class="font-bold text-slate-800 flex items-center gap-2 mb-4">
                     <i data-lucide="mail" class="text-sky-500"></i> 發送分析報告
                 </h3>
-                
                 <div class="space-y-4">
-                    <div id="recipientListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <!-- Recipient checkboxes -->
-                    </div>
-
+                    <div id="recipientListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
                     <div class="flex gap-2">
-                        <input type="email" id="newEmailInput" placeholder="新增其他信箱..." class="flex-grow p-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-sky-500/20 outline-none text-sm bg-white">
+                        <input type="email" id="newEmailInput" placeholder="新增其他信箱..." class="flex-grow p-3 rounded-xl border border-slate-200 outline-none text-sm bg-white">
                         <button onclick="addRecipient()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-all text-sm flex items-center gap-1">
                             <i data-lucide="plus" class="w-4 h-4"></i> 新增
                         </button>
                     </div>
-
                     <button id="sendEmailBtn" class="w-full py-4 bg-slate-800 text-white rounded-2xl font-bold hover:bg-slate-900 transition-all flex items-center justify-center gap-2 shadow-lg mt-2">
                         <i data-lucide="send" class="w-5 h-5"></i> 發送完整表格報告
                     </button>
@@ -150,26 +152,25 @@
                 <button onclick="toggleSettings()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             
-            <p class="text-xs text-slate-500 mb-4">請輸入 Google Gemini API Key 以啟動聯網分析功能。</p>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed">請輸入 Google Gemini API Key 以啟動聯網分析功能。此 Key 將永久儲存於您的瀏覽器中。</p>
             
-            <div class="mb-6">
-                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Google Gemini API Key</label>
-                <input type="password" id="apiKeyInput" placeholder="輸入金鑰..." class="w-full p-4 rounded-xl bg-slate-50 border border-slate-100 focus:ring-2 focus:ring-sky-500/50 font-mono text-sm outline-none">
+            <div class="mb-8">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-widest">API Key</label>
+                <input type="password" id="apiKeyInput" placeholder="輸入您的 Gemini API Key..." class="w-full p-4 rounded-xl bg-slate-50 border border-slate-100 focus:ring-2 focus:ring-sky-500/50 font-mono text-sm outline-none">
                 
-                <!-- API Key Link -->
                 <a href="https://aistudio.google.com/app/apikey" target="_blank" class="mt-3 flex items-center gap-2 text-xs font-bold text-sky-600 hover:text-sky-700 transition-colors group">
-                    <i data-lucide="external-link" class="w-3 h-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"></i>
+                    <i data-lucide="external-link" class="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
                     點此前往 Google AI Studio 免費取得 API Key
                 </a>
             </div>
 
-            <button onclick="saveSettings()" class="w-full py-4 bg-sky-600 text-white rounded-xl font-bold shadow-lg shadow-sky-100 mb-2 hover:bg-sky-700 transition-colors">儲存設定</button>
+            <button onclick="saveSettings()" class="w-full py-4 bg-sky-600 text-white rounded-xl font-bold shadow-lg shadow-sky-100 mb-2 hover:bg-sky-700 transition-all">儲存並啟動</button>
             <button onclick="toggleSettings()" class="w-full py-2 text-slate-400 font-medium text-sm">稍後再說</button>
         </div>
     </div>
 
     <script>
-        // --- Service Worker Registration ---
+        // --- Service Worker ---
         if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
@@ -192,38 +193,59 @@
         const loadingState = document.getElementById('loadingState');
         const resultContent = document.getElementById('resultContent');
         const emailStatus = document.getElementById('emailStatus');
+        const apiStatusBadge = document.getElementById('apiStatusBadge');
 
         lucide.createIcons();
         if (window.emailjs) window.emailjs.init("mYOFMMnqLdDxR0wjj");
+        
+        // Initial Connection UI Status
+        updateUIAuthStatus();
+
+        function updateUIAuthStatus() {
+            if (config.apiKey) {
+                apiStatusBadge.innerText = "專家系統已連線";
+                apiStatusBadge.className = "px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold tracking-tight";
+            } else {
+                apiStatusBadge.innerText = "未設定 Key";
+                apiStatusBadge.className = "px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs font-bold tracking-tight";
+            }
+        }
 
         function toggleSettings() {
-            document.getElementById('settingsModal').classList.toggle('hidden');
-            document.getElementById('apiKeyInput').value = config.apiKey;
+            const modal = document.getElementById('settingsModal');
+            const input = document.getElementById('apiKeyInput');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                input.value = config.apiKey;
+            }
         }
 
         function saveSettings() {
             const val = document.getElementById('apiKeyInput').value.trim();
-            localStorage.setItem('mm_symptom_api_key', val);
             config.apiKey = val;
+            localStorage.setItem('mm_symptom_api_key', val);
+            updateUIAuthStatus();
             toggleSettings();
         }
 
         function renderRecipients() {
             const container = document.getElementById('recipientListContainer');
             container.innerHTML = recipients.map((r, idx) => `
-                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-100 bg-white/50 cursor-pointer hover:bg-white transition-all shadow-sm">
-                    <input type="checkbox" ${r.selected ? 'checked' : ''} onchange="toggleRecipient(${idx})">
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-100 bg-white/50 cursor-pointer hover:bg-white shadow-sm">
+                    <input type="checkbox" ${r.selected ? 'checked' : ''} onchange="recipients[${idx}].selected = !recipients[${idx}].selected">
                     <span class="text-xs font-mono text-slate-600 truncate">${r.email}</span>
                 </label>
             `).join('');
             lucide.createIcons();
         }
 
-        function toggleRecipient(idx) { recipients[idx].selected = !recipients[idx].selected; }
         function addRecipient() {
             const input = document.getElementById('newEmailInput');
             const email = input.value.trim();
-            if (email && /^\S+@\S+\.\S+$/.test(email)) { recipients.push({ email, selected: true }); input.value = ''; renderRecipients(); }
+            if (email && /^\S+@\S+\.\S+$/.test(email)) {
+                recipients.push({ email, selected: true });
+                input.value = ''; renderRecipients();
+            }
         }
 
         async function fetchWithRetry(url, options, maxRetries = 5) {
@@ -232,16 +254,9 @@
                 try {
                     const response = await fetch(url, options);
                     if (response.ok) return response;
-                    if (response.status === 429 || response.status >= 500) {
-                        await new Promise(r => setTimeout(r, delay));
-                        delay *= 2; continue;
-                    }
+                    if (response.status === 429 || response.status >= 500) { await new Promise(r => setTimeout(r, delay)); delay *= 2; continue; }
                     throw new Error(`HTTP ${response.status}`);
-                } catch (err) {
-                    if (i === maxRetries - 1) throw err;
-                    await new Promise(r => setTimeout(r, delay));
-                    delay *= 2;
-                }
+                } catch (err) { if (i === maxRetries - 1) throw err; await new Promise(r => setTimeout(r, delay)); delay *= 2; }
             }
         }
 
@@ -260,7 +275,7 @@
             finally { setLoading(false); }
         };
 
-        // --- Core Algorithm: Detailed Expert Prompt ---
+        // --- Core Algorithm: Detailed Expert Prompt (Unaltered as requested) ---
         async function callGeminiWithMM(userQuery) {
             const systemPrompt = `你是一位精通安東尼·威廉《醫療靈媒》(Medical Medium) 系列叢書與線上資源的權威導師。
             
@@ -290,58 +305,34 @@
                 tools: [{ "google_search": {} }]
             };
 
-            const response = await fetchWithRetry(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${config.apiKey}`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }
-            );
+            const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${config.apiKey}`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+            });
 
             const data = await response.json();
             const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
             const groundingMetadata = data.candidates?.[0]?.groundingMetadata;
-
             const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) throw new Error("無效的回應格式。");
             const parsed = JSON.parse(jsonMatch[0]);
 
-            // Integrate Grounding Metadata into sources
             const webSources = groundingMetadata?.groundingAttributions?.map(a => ({
-                type: "web",
-                title: a.web?.title || "Medical Medium Resource",
-                uri: a.web?.uri || "#"
+                type: "web", title: a.web?.title || "Medical Medium Resource", uri: a.web?.uri || "#"
             })) || [];
 
-            // Combine AI structured sources with Google Search grounding
-            parsed.all_sources = [...(parsed.structured_sources || []), ...webSources];
-            
-            // Remove duplicates by title
-            const uniqueSources = [];
-            const seen = new Set();
-            for (const s of parsed.all_sources) {
-                if (s && s.title && !seen.has(s.title)) {
-                    seen.add(s.title);
-                    uniqueSources.push(s);
-                }
-            }
-            parsed.sources = uniqueSources;
-
+            parsed.sources = Array.from(new Set([...(parsed.structured_sources || []), ...webSources].map(s => s.title)))
+                .map(title => [...(parsed.structured_sources || []), ...webSources].find(s => s.title === title));
             return parsed;
         }
 
         function renderResults(data) {
             resultContent.classList.remove('hidden');
             document.getElementById('rootCause').innerText = data.root_cause || "未偵測到明確病因";
-            
             document.getElementById('healingFoods').innerHTML = (data.healing_foods || []).map(f => `<li class="flex items-start gap-2 mb-1"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500 mt-0.5"></i> <span>${f}</span></li>`).join('');
             document.getElementById('supplements').innerHTML = (data.supplements || []).map(s => `<li class="flex items-start gap-2 mb-1"><i data-lucide="plus-circle" class="w-3.5 h-3.5 text-amber-500 mt-0.5"></i> <span>${s}</span></li>`).join('');
             document.getElementById('expertGuidance').innerHTML = (data.expert_guidance || "").split('\n').filter(p => p.trim()).map(p => `<p class="mb-3">${p}</p>`).join('');
-            
             document.getElementById('citations').innerHTML = (data.sources || []).map(s => `
                 <div class="flex items-start gap-3 p-3 bg-slate-800/40 rounded-xl border border-slate-700/50">
-                    <div class="p-2 rounded-lg bg-slate-700"><i data-lucide="${s.type === 'book' ? 'book' : 'globe'}" class="w-4 h-4 text-sky-400"></i></div>
+                    <div class="p-2 rounded-lg bg-slate-700 text-sky-400"><i data-lucide="${s.type === 'book' ? 'book' : 'globe'}" class="w-4 h-4"></i></div>
                     <div class="flex-grow overflow-hidden text-xs text-slate-100">
                         <span class="font-bold block truncate">${s.title}</span>
                         ${s.uri ? `<a href="${s.uri}" target="_blank" class="source-link text-sky-500 truncate block mt-1">${s.uri}</a>` : (s.detail ? `<p class="text-[10px] text-slate-400 mt-1 italic">${s.detail}</p>` : '')}
@@ -354,22 +345,24 @@
         function setLoading(l) {
             loadingState.classList.toggle('hidden', !l);
             analyzeBtn.disabled = l;
-            if (l) resultContent.classList.add('hidden');
+            if (l) {
+                resultContent.classList.add('hidden');
+                analyzeBtn.innerHTML = `<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> 檢索中...`;
+            } else {
+                analyzeBtn.innerHTML = `<i data-lucide="sparkles" class="w-5 h-5"></i> 啟動專家分析`;
+            }
             lucide.createIcons();
         }
 
-        // --- Email Export (Table Format) ---
         document.getElementById('sendEmailBtn').onclick = async () => {
             const selectedEmails = recipients.filter(r => r.selected).map(r => r.email);
-            if (!currentResult || selectedEmails.length === 0) return alert("請確認有分析結果且至少勾選一個收件人");
+            if (!currentResult || selectedEmails.length === 0) return alert("請確認分析完畢並勾選收件人。");
+            const btn = document.getElementById('sendEmailBtn');
+            btn.disabled = true; btn.innerHTML = "傳送中...";
             
-            const sendBtn = document.getElementById('sendEmailBtn');
-            sendBtn.disabled = true;
-            sendBtn.innerHTML = `正在發送中...`;
-
             const dateStr = new Date().toISOString().split('T')[0];
             const emailHtml = `
-                <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; color: #333; background-color: #f0f9ff; padding: 20px; border-radius: 12px;">
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; background-color: #f0f9ff; padding: 20px; border-radius: 12px;">
                     <h2 style="color: #0284c7; text-align: center; border-bottom: 2px solid #0284c7; padding-bottom: 10px;">MM 症狀療癒分析報告</h2>
                     <div style="background-color: #ffffff; padding: 15px; border-radius: 10px; border: 1px solid #e0f2fe; margin-bottom: 20px;">
                         <p style="margin: 0;"><strong>分析症狀：</strong> <span style="font-size: 1.2em; color: #0369a1;">${lastSymptom}</span></p>
@@ -386,62 +379,30 @@
                         <tbody>
                             <tr>
                                 <td style="padding: 15px; border: 1px solid #bae6fd; vertical-align: top; width: 35%; background-color: #fef2f2;">
-                                    <strong style="color: #b91c1c;">核心分析：</strong><br/>
-                                    <p style="font-size: 14px; font-weight: bold;">${currentResult.root_cause}</p>
+                                    <strong>核心病因：</strong><br/>${currentResult.root_cause}
                                 </td>
                                 <td style="padding: 15px; border: 1px solid #bae6fd; vertical-align: top; width: 65%;">
-                                    <div style="margin-bottom: 10px;">
-                                        <strong style="color: #059669;">🌿 推薦食物：</strong>
-                                        <ul style="margin: 5px 0; padding-left: 20px; font-size: 13px;">
-                                            ${currentResult.healing_foods.map(f => `<li>${f}</li>`).join('')}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <strong style="color: #d97706;">💊 建議補充品：</strong>
-                                        <ul style="margin: 5px 0; padding-left: 20px; font-size: 13px;">
-                                            ${currentResult.supplements.map(s => `<li>${s}</li>`).join('')}
-                                        </ul>
-                                    </div>
+                                    <strong>🌿 推薦食物：</strong><br/>${currentResult.healing_foods.join(', ')}<br/><br/>
+                                    <strong>💊 建議補充品：</strong><br/>${currentResult.supplements.join(', ')}
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="padding: 15px; border: 1px solid #bae6fd; background-color: #f8fafc;">
-                                    <strong style="color: #0284c7;">📚 專家引導建議：</strong>
-                                    <p style="font-size: 13px; line-height: 1.6; color: #334155;">${currentResult.expert_guidance.replace(/\n/g, '<br/>')}</p>
+                                    <strong>📚 專家引導建議：</strong><br/>${currentResult.expert_guidance.replace(/\n/g, '<br/>')}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <p style="text-align: center; color: #94a3b8; font-size: 11px; margin-top: 25px;">
-                        此報告由 MM AI 專家系統生成。請以安東尼·威廉《醫療靈媒》原著為準。
-                    </p>
                 </div>
             `;
 
-            const templateParams = {
-                email: selectedEmails.join(','),
-                to_email: selectedEmails.join(','),
-                recipient: selectedEmails.join(','),
-                subject: `MM Symptom Report: ${lastSymptom} - ${dateStr}`,
-                message: emailHtml
-            };
-
-            window.emailjs.send('service_5yh7x6g', 'template_dlbyml8', templateParams)
-                .then(() => {
-                    emailStatus.innerText = "✅ 報告已成功發送至您的信箱！";
-                    emailStatus.className = "text-center text-xs font-bold text-emerald-600 animate-pulse mt-2 block";
-                    emailStatus.classList.remove('hidden');
-                })
-                .catch((err) => {
-                    emailStatus.innerText = "❌ 發送失敗，請確認連線。";
-                    emailStatus.className = "text-center text-xs font-bold text-red-600 mt-2 block";
-                    emailStatus.classList.remove('hidden');
-                })
-                .finally(() => {
-                    sendBtn.disabled = false;
-                    sendBtn.innerHTML = `<i data-lucide="send" class="w-5 h-5"></i> 發送完整表格報告`;
-                    lucide.createIcons();
-                });
+            window.emailjs.send("service_5yh7x6g", "template_dlbyml8", {
+                email: selectedEmails.join(','), to_email: selectedEmails.join(','), recipient: selectedEmails.join(','),
+                subject: `MM Report: ${lastSymptom} (${dateStr})`, message: emailHtml
+            }).then(() => {
+                emailStatus.innerText = "✅ 報告已成功發送！"; emailStatus.classList.remove('hidden');
+                emailStatus.className = "text-center text-xs font-bold text-emerald-600 animate-pulse mt-2 block";
+            }).catch(() => alert("發送失敗")).finally(() => { btn.disabled = false; btn.innerHTML = "發送完整表格報告"; lucide.createIcons(); });
         };
     </script>
 </body>
